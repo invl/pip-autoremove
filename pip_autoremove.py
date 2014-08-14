@@ -5,30 +5,34 @@ from pkg_resources import working_set, get_distribution
 
 
 def autoremove(name, yes=False):
-    dead = find_all_dead(get_distribution(name))
+    dist = get_distribution(name)
+    graph = get_graph()
+    dead = find_all_dead(graph, set([dist]))
     print("Uninstalling:")
     map(show_dist, dead)
     if yes or confirm("Proceed (y/N)?"):
         map(remove_dist, dead)
 
 
-def find_all_dead(start):
-    g = get_graph()
-    dead = set([start])
-    while True:
-        new = set(find_dead(g, dead))
-        if not new:
-            break
-        dead |= new
-    return dead
+def find_all_dead(graph, start):
+    return fixed_point(lambda d: find_dead(graph, d), start)
 
 
 def find_dead(graph, dead):
-    for node, succ in graph.items():
-        if node not in dead:
-            # We only care about leaves killed by us
-            if succ and not (succ - dead):
-                yield node
+
+    def is_killed_by_us(node):
+        succ = graph[node]
+        return succ and not (succ - dead)
+
+    return dead | set(filter(is_killed_by_us, graph))
+
+
+def fixed_point(f, x):
+    while True:
+        y = f(x)
+        if y == x:
+            return x
+        x = y
 
 
 def confirm(prompt):
