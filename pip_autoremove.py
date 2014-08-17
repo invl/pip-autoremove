@@ -1,6 +1,5 @@
-import os
 import argparse
-
+import pip
 from pkg_resources import working_set, get_distribution
 
 
@@ -53,7 +52,10 @@ def show_dist(dist):
 
 
 def remove_dist(dist):
-    os.system('pip uninstall -y %s' % dist.project_name)
+    pip.main(['uninstall', '-y', dist.project_name])
+    # Avoid duplicate output caused by pip.logger.consumers being configured
+    # over and over again
+    pip.logger.consumers = []
 
 
 def get_graph():
