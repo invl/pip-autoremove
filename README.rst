@@ -7,7 +7,7 @@ Remove a package and its unused dependencies.
 Usage
 -----
 
-.. code-block:: bash
+.. code-block:: sh
 
     $ pip install Flask
 
@@ -20,14 +20,16 @@ Usage
     Successfully installed Flask Werkzeug Jinja2 itsdangerous markupsafe
     Cleaning up...
 
+.. code-block:: sh
+
     $ pip-autoremove Flask -y
 
     Uninstalling:
-    MarkupSafe 0.23 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
-    Jinja2 2.7.3 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
-    itsdangerous 0.24 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
-    Werkzeug 0.9.6 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
-    Flask 0.10.1 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+     Flask 0.10.1 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+         Werkzeug 0.9.6 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+         Jinja2 2.7.3 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+             MarkupSafe 0.23 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+         itsdangerous 0.24 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
 
     Uninstalling MarkupSafe:
       Successfully uninstalled MarkupSafe
