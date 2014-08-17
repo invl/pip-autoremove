@@ -1,5 +1,7 @@
 from __future__ import print_function
 
+__version__ = '0.5.0-dev'
+
 try:
     raw_input
 except NameError:
@@ -77,7 +79,10 @@ def requires(dist):
 
 
 def main(argv=None):
-    parser = optparse.OptionParser(usage='usage: %prog [-hy] NAME')
+    parser = optparse.OptionParser(
+        usage='usage: %prog [-hy] NAME',
+        version='%prog ' + __version__,
+    )
     parser.add_option('-y', '--yes', action='store_true', default=False)
     (opts, args) = parser.parse_args(argv)
     if len(args) != 1:

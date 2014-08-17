@@ -1,9 +1,11 @@
 from setuptools import setup
 
+import pip_autoremove
+
 
 setup(
     name="pip-autoremove",
-    version="0.4.1",
+    version=pip_autoremove.__version__,
     description="Remove a package and its unused dependencies",
     long_description=open('README.rst').read(),
     py_modules=["pip_autoremove"],
