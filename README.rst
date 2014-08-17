@@ -1,6 +1,15 @@
 pip-autoremove
 ==============
 
+.. image:: https://pypip.in/d/pip-autoremove/badge.png
+        :target: https://pypi.python.org/pypi/pip-autoremove/
+
+.. image:: https://pypip.in/v/pip-autoremove/badge.png
+        :target: https://pypi.python.org/pypi/pip-autoremove/
+
+.. image:: https://pypip.in/license/pip-autoremove/badge.png
+        :target: https://pypi.python.org/pypi/pip-autoremove/
+
 Remove a package and its unused dependencies.
 
 
