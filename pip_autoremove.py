@@ -22,7 +22,7 @@ def autoremove(name, yes=False):
 
 def show_tree(dist, dead, indent=0):
     prefix = ' ' * indent * 4
-    print(prefix, end=' ')
+    print(prefix, end='')
     show_dist(dist)
     for req in requires(dist):
         if req in dead:
