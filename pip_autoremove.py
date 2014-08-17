@@ -5,7 +5,7 @@ try:
 except NameError:
     raw_input = input
 
-import argparse
+import optparse
 import pip
 from pkg_resources import working_set, get_distribution
 
@@ -79,11 +79,12 @@ def requires(dist):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('name')
-    parser.add_argument('-y', '--yes', action='store_true')
-    args = parser.parse_args()
-    autoremove(args.name, args.yes)
+    parser = optparse.OptionParser(usage='usage: %prog [-hy] NAME')
+    parser.add_option('-y', '--yes', action='store_true', default=False)
+    (opts, args) = parser.parse_args()
+    if len(args) != 1:
+        parser.error('Incorrect number of arguments')
+    autoremove(args[0], opts.yes)
 
 if __name__ == '__main__':
     main()
