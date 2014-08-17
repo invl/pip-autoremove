@@ -14,9 +14,8 @@ def autoremove(name, yes=False):
     dist = get_distribution(name)
     graph = get_graph()
     dead = find_all_dead(graph, set([dist]))
-    print("Uninstalling:")
     show_tree(dist, dead)
-    if yes or confirm("Proceed (y/N)?"):
+    if yes or confirm("Uninstall (y/N)?"):
         for d in dead:
             remove_dist(d)
 
