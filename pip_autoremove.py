@@ -1,3 +1,10 @@
+from __future__ import print_function
+
+try:
+    raw_input
+except NameError:
+    raw_input = input
+
 import argparse
 import pip
 from pkg_resources import working_set, get_distribution
@@ -10,12 +17,13 @@ def autoremove(name, yes=False):
     print("Uninstalling:")
     show_tree(dist, dead)
     if yes or confirm("Proceed (y/N)?"):
-        map(remove_dist, dead)
+        for d in dead:
+            remove_dist(d)
 
 
 def show_tree(dist, dead, indent=0):
     prefix = ' ' * indent * 4
-    print prefix,
+    print(prefix, end=' ')
     show_dist(dist)
     for req in requires(dist):
         if req in dead:
