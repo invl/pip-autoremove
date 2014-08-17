@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-__version__ = '0.5.0-dev'
+__version__ = '0.5.0'
 
 try:
     raw_input
