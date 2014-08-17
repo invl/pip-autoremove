@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="pip-autoremove",
-    version="0.3.0",
+    version="0.4.0",
     description="Remove a package and its unused dependencies",
     long_description=open('README.rst').read(),
     py_modules=["pip_autoremove"],
