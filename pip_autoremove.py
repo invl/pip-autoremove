@@ -67,7 +67,7 @@ def remove_dist(dist):
 
 
 def get_graph():
-    g = {dist: set() for dist in working_set}
+    g = dict((dist, set()) for dist in working_set)
     for dist in working_set:
         for req in requires(dist):
             g[req].add(dist)
