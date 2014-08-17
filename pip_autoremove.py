@@ -76,10 +76,10 @@ def requires(dist):
     return map(get_distribution, dist.requires())
 
 
-def main():
+def main(argv=None):
     parser = optparse.OptionParser(usage='usage: %prog [-hy] NAME')
     parser.add_option('-y', '--yes', action='store_true', default=False)
-    (opts, args) = parser.parse_args()
+    (opts, args) = parser.parse_args(argv)
     if len(args) != 1:
         parser.error('Incorrect number of arguments')
     autoremove(args[0], opts.yes)

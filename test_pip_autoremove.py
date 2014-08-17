@@ -32,13 +32,13 @@ def has_dist(req):
     return working_set.find(req)
 
 
-def test_autoremove():
+def test_main():
     expected = ["Flask", "Jinja2", "MarkupSafe", "Werkzeug", "itsdangerous"]
 
     install_dist('Flask')
     for name in expected:
         assert has_dist(name)
 
-    pip_autoremove.autoremove('Flask', yes=True)
+    pip_autoremove.main(['-y', 'Flask'])
     for name in expected:
         assert not has_dist(name)
