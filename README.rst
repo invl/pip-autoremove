@@ -10,6 +10,7 @@ pip-autoremove
 .. image:: https://pypip.in/license/pip-autoremove/badge.png
         :target: https://pypi.python.org/pypi/pip-autoremove/
 
+
 Remove a package and its unused dependencies.
 
 
@@ -20,14 +21,12 @@ Usage
 
     $ pip install Flask
 
+    ...
     Installing collected packages: Flask, Werkzeug, Jinja2, itsdangerous, markupsafe
-      Running setup.py install for Flask
-      Running setup.py install for Werkzeug
-      Running setup.py install for Jinja2
-      Running setup.py install for itsdangerous
-      Running setup.py install for markupsafe
+    ...
     Successfully installed Flask Werkzeug Jinja2 itsdangerous markupsafe
     Cleaning up...
+
 
 .. code-block:: sh
 
@@ -55,6 +54,6 @@ Usage
 Installation
 ------------
 
-.. code-block:: bash
+.. code-block:: sh
 
     $ pip install pip-autoremove
