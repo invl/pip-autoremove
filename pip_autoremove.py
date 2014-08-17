@@ -9,9 +9,18 @@ def autoremove(name, yes=False):
     graph = get_graph()
     dead = find_all_dead(graph, set([dist]))
     print("Uninstalling:")
-    map(show_dist, dead)
+    show_tree(dist, dead)
     if yes or confirm("Proceed (y/N)?"):
         map(remove_dist, dead)
+
+
+def show_tree(dist, dead, indent=0):
+    prefix = ' ' * indent * 4
+    print prefix,
+    show_dist(dist)
+    for req in requires(dist):
+        if req in dead:
+            show_tree(req, dead, indent + 1)
 
 
 def find_all_dead(graph, start):
