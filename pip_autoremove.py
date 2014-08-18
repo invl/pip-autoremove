@@ -1,15 +1,17 @@
 from __future__ import print_function
 
+import optparse
+
+import pip
+from pkg_resources import working_set, get_distribution
+
+
 __version__ = '0.5.0'
 
 try:
     raw_input
 except NameError:
     raw_input = input
-
-import optparse
-import pip
-from pkg_resources import working_set, get_distribution
 
 
 def autoremove(name, yes=False):
