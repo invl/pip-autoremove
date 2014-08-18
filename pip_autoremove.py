@@ -83,7 +83,9 @@ def main(argv=None):
         usage='usage: %prog [-hy] NAME',
         version='%prog ' + __version__,
     )
-    parser.add_option('-y', '--yes', action='store_true', default=False)
+    parser.add_option(
+        '-y', '--yes', action='store_true', default=False,
+        help="don't ask for confirmation of uninstall deletions.")
     (opts, args) = parser.parse_args(argv)
     if len(args) != 1:
         parser.error('Incorrect number of arguments')
