@@ -61,7 +61,7 @@ Usage
 
 .. code-block:: sh
 
-    Usage: pip_autoremove.py [-hy] NAME
+    Usage: pip-autoremove [-hy] NAME...
 
     Options:
       --version   show program's version number and exit

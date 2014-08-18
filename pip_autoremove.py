@@ -14,12 +14,13 @@ except NameError:
     raw_input = input
 
 
-def autoremove(name, yes=False):
-    dist = get_distribution(name)
+def autoremove(names, yes=False):
+    start = set(map(get_distribution, names))
     graph = get_graph()
-    dead = find_all_dead(graph, set([dist]))
-    show_tree(dist, dead)
-    if yes or confirm("Uninstall (y/N)?"):
+    dead = find_all_dead(graph, start)
+    for d in start:
+        show_tree(d, dead)
+    if dead and (yes or confirm("Uninstall (y/N)?")):
         for d in dead:
             remove_dist(d)
 
@@ -83,14 +84,12 @@ def requires(dist):
 def main(argv=None):
     parser = create_parser()
     (opts, args) = parser.parse_args(argv)
-    if len(args) != 1:
-        parser.error('Incorrect number of arguments')
-    autoremove(args[0], opts.yes)
+    autoremove(args, yes=opts.yes)
 
 
 def create_parser():
     parser = optparse.OptionParser(
-        usage='usage: %prog [-hy] NAME',
+        usage='usage: %prog [-hy] NAME...',
         version='%prog ' + __version__,
     )
     parser.add_option(
