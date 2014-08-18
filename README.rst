@@ -56,6 +56,32 @@ Uninstall it and all its unused dependencies:
     Uninstalling Flask:
       Successfully uninstalled Flask
 
+Remove multiple packages and their dependencies at once:
+
+.. code-block:: sh
+
+    $ pip install Flask Sphinx
+
+    ...
+    Successfully installed Flask Sphinx Werkzeug Jinja2 itsdangerous Pygments docutils markupsafe
+    Cleaning up...
+
+.. code-block:: sh
+
+    $ pip-autoremove Flask Sphinx -y
+
+    Sphinx 1.2.2 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+        Jinja2 2.7.3 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+            MarkupSafe 0.23 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+        Pygments 1.6 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+        docutils 0.12 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+    Flask 0.10.1 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+        Werkzeug 0.9.6 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+        Jinja2 2.7.3 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+            MarkupSafe 0.23 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+        itsdangerous 0.24 (/tmp/pip-autoremove/.venv/lib/python2.7/site-packages)
+    ...
+
 Usage
 -----
 
