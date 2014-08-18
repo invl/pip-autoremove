@@ -81,6 +81,14 @@ def requires(dist):
 
 
 def main(argv=None):
+    parser = create_parser()
+    (opts, args) = parser.parse_args(argv)
+    if len(args) != 1:
+        parser.error('Incorrect number of arguments')
+    autoremove(args[0], opts.yes)
+
+
+def create_parser():
     parser = optparse.OptionParser(
         usage='usage: %prog [-hy] NAME',
         version='%prog ' + __version__,
@@ -88,10 +96,8 @@ def main(argv=None):
     parser.add_option(
         '-y', '--yes', action='store_true', default=False,
         help="don't ask for confirmation of uninstall deletions.")
-    (opts, args) = parser.parse_args(argv)
-    if len(args) != 1:
-        parser.error('Incorrect number of arguments')
-    autoremove(args[0], opts.yes)
+    return parser
+
 
 if __name__ == '__main__':
     main()
