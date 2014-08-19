@@ -89,7 +89,7 @@ def main(argv=None):
 
 def create_parser():
     parser = optparse.OptionParser(
-        usage='usage: %prog [-hy] NAME...',
+        usage='usage: %prog [OPTION]... [NAME]...',
         version='%prog ' + __version__,
     )
     parser.add_option(
