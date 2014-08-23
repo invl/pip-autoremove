@@ -85,7 +85,7 @@ Remove multiple packages and their dependencies at once:
 Usage
 -----
 
-.. code-block:: sh
+.. code-block::
 
     Usage: pip-autoremove [OPTION]... [NAME]...
 
