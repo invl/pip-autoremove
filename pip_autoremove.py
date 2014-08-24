@@ -15,14 +15,19 @@ except NameError:
 
 
 def autoremove(names, yes=False):
+    dead = list_dead(names)
+    if dead and (yes or confirm("Uninstall (y/N)?")):
+        for d in dead:
+            remove_dist(d)
+
+
+def list_dead(names):
     start = set(map(get_distribution, names))
     graph = get_graph()
     dead = find_all_dead(graph, start)
     for d in start:
         show_tree(d, dead)
-    if dead and (yes or confirm("Uninstall (y/N)?")):
-        for d in dead:
-            remove_dist(d)
+    return dead
 
 
 def show_tree(dist, dead, indent=0):
@@ -84,7 +89,10 @@ def requires(dist):
 def main(argv=None):
     parser = create_parser()
     (opts, args) = parser.parse_args(argv)
-    autoremove(args, yes=opts.yes)
+    if opts.list:
+        list_dead(args)
+    else:
+        autoremove(args, yes=opts.yes)
 
 
 def create_parser():
@@ -92,6 +100,9 @@ def create_parser():
         usage='usage: %prog [OPTION]... [NAME]...',
         version='%prog ' + __version__,
     )
+    parser.add_option(
+        '-l', '--list', action='store_true', default=False,
+        help="list unused dependencies, but don't uninstall them.")
     parser.add_option(
         '-y', '--yes', action='store_true', default=False,
         help="don't ask for confirmation of uninstall deletions.")
