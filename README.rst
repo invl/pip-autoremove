@@ -17,15 +17,11 @@ Remove a package and its unused dependencies.
 Quickstart
 ----------
 
-First, install ``pip-autoremove``
-
-.. code-block:: sh
+First, install ``pip-autoremove``::
 
     $ pip install pip-autoremove
 
-Install a package which has dependencies, e.g. ``Flask``:
-
-.. code-block:: sh
+Install a package which has dependencies, e.g. ``Flask``::
 
     $ pip install Flask
 
@@ -33,9 +29,7 @@ Install a package which has dependencies, e.g. ``Flask``:
     Successfully installed Flask Werkzeug Jinja2 itsdangerous markupsafe
     Cleaning up...
 
-Uninstall it and all its unused dependencies:
-
-.. code-block:: sh
+Uninstall it and all its unused dependencies::
 
     $ pip-autoremove Flask -y
 
@@ -56,9 +50,7 @@ Uninstall it and all its unused dependencies:
     Uninstalling Flask:
       Successfully uninstalled Flask
 
-Remove multiple packages and their dependencies at once:
-
-.. code-block:: sh
+Remove multiple packages and their dependencies at once::
 
     $ pip install Flask Sphinx
 
@@ -66,7 +58,7 @@ Remove multiple packages and their dependencies at once:
     Successfully installed Flask Sphinx Werkzeug Jinja2 itsdangerous Pygments docutils markupsafe
     Cleaning up...
 
-.. code-block:: sh
+::
 
     $ pip-autoremove Flask Sphinx -y
 
@@ -85,7 +77,7 @@ Remove multiple packages and their dependencies at once:
 Usage
 -----
 
-.. code-block::
+::
 
     Usage: pip-autoremove [OPTION]... [NAME]...
 
@@ -99,6 +91,6 @@ Usage
 Installation
 ------------
 
-.. code-block:: sh
+::
 
     $ pip install pip-autoremove
