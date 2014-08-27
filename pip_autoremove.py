@@ -89,10 +89,26 @@ def requires(dist):
 def main(argv=None):
     parser = create_parser()
     (opts, args) = parser.parse_args(argv)
-    if opts.list:
+    if opts.leaves:
+        list_leaves()
+    elif opts.list:
         list_dead(args)
     else:
         autoremove(args, yes=opts.yes)
+
+
+def get_leaves(graph):
+
+    def is_leaf(node):
+        return not graph[node]
+
+    return filter(is_leaf, graph)
+
+
+def list_leaves():
+    graph = get_graph()
+    for node in get_leaves(graph):
+        show_dist(node)
 
 
 def create_parser():
@@ -103,6 +119,9 @@ def create_parser():
     parser.add_option(
         '-l', '--list', action='store_true', default=False,
         help="list unused dependencies, but don't uninstall them.")
+    parser.add_option(
+        '-L', '--leaves', action='store_true', default=False,
+        help="list leaves (packages which are not used by any others).")
     parser.add_option(
         '-y', '--yes', action='store_true', default=False,
         help="don't ask for confirmation of uninstall deletions.")

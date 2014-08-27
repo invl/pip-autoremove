@@ -82,11 +82,11 @@ Usage
     Usage: pip-autoremove [OPTION]... [NAME]...
 
     Options:
-      --version   show program's version number and exit
-      -h, --help  show this help message and exit
-      -l, --list  list unused dependencies, but don't uninstall them.
-      -y, --yes   don't ask for confirmation of uninstall deletions.
-
+      --version     show program's version number and exit
+      -h, --help    show this help message and exit
+      -l, --list    list unused dependencies, but don't uninstall them.
+      -L, --leaves  list leaves (packages which are not used by any others).
+      -y, --yes     don't ask for confirmation of uninstall deletions.
 
 Installation
 ------------
