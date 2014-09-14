@@ -6,7 +6,7 @@ import pip
 from pkg_resources import working_set, get_distribution
 
 
-__version__ = '0.7.0'
+__version__ = '0.8.0'
 
 try:
     raw_input
