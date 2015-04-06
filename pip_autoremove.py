@@ -37,12 +37,17 @@ def exclude_whitelist(dists):
     return set(dist for dist in dists if dist.project_name not in WHITELIST)
 
 
-def show_tree(dist, dead, indent=0):
+def show_tree(dist, dead, indent=0, visited=None):
+    if visited is None:
+        visited = set()
+    if dist in visited:
+        return
+    visited.add(dist)
     print(' ' * 4 * indent, end='')
     show_dist(dist)
     for req in requires(dist):
         if req in dead:
-            show_tree(req, dead, indent + 1)
+            show_tree(req, dead, indent + 1, visited)
 
 
 def find_all_dead(graph, start):
