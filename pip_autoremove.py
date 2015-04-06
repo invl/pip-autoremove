@@ -14,6 +14,9 @@ except NameError:
     raw_input = input
 
 
+WHITELIST = ['pip', 'setuptools']
+
+
 def autoremove(names, yes=False):
     dead = list_dead(names)
     if dead and (yes or confirm("Uninstall (y/N)?")):
@@ -24,10 +27,14 @@ def autoremove(names, yes=False):
 def list_dead(names):
     start = set(map(get_distribution, names))
     graph = get_graph()
-    dead = find_all_dead(graph, start)
+    dead = exclude_whitelist(find_all_dead(graph, start))
     for d in start:
         show_tree(d, dead)
     return dead
+
+
+def exclude_whitelist(dists):
+    return set(dist for dist in dists if dist.project_name not in WHITELIST)
 
 
 def show_tree(dist, dead, indent=0):
