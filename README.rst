@@ -1,13 +1,13 @@
 pip-autoremove
 ==============
 
-.. image:: https://pypip.in/d/pip-autoremove/badge.png
+.. image:: https://img.shields.io/pypi/dm/pip-autoremove.svg
         :target: https://pypi.python.org/pypi/pip-autoremove/
 
-.. image:: https://pypip.in/v/pip-autoremove/badge.png
+.. image:: https://img.shields.io/pypi/v/pip-autoremove.svg
         :target: https://pypi.python.org/pypi/pip-autoremove/
 
-.. image:: https://pypip.in/license/pip-autoremove/badge.png
+.. image:: https://img.shields.io/pypi/l/pip-autoremove.svg
         :target: https://pypi.python.org/pypi/pip-autoremove/
 
 
