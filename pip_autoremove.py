@@ -1,12 +1,14 @@
 from __future__ import print_function
 
 import optparse
-
+import os
 import pip
+import platform
+
 from pkg_resources import working_set, get_distribution
 
 
-__version__ = '0.9.0'
+__version__ = '0.9.1'
 
 try:
     raw_input
@@ -14,12 +16,54 @@ except NameError:
     raw_input = input
 
 
+try:
+    dict.iteritems
+except AttributeError:
+
+    def iteritems(d):
+        return iter(d.items())
+else:
+
+    def iteritems(d):
+        return d.iteritems()
+
+
 WHITELIST = ['pip', 'setuptools']
 
+def get_package_manager():
+    managers = {
+        'rpm'  : ['/etc/redhat-release'],
+        'dpkg' : ['/etc/lsb-release', '/etc/debian_version']
+    }
+
+    if platform.system() == 'Linux':
+        for pkg, files in iteritems(managers):
+            for identy in files:
+                if os.path.isfile(identy):
+                    return pkg
+
+
+def get_package(dist):
+    try:
+        manager = get_package_manager()
+        egg = os.path.join(dist.location, (dist.egg_name() + '.egg-info'))
+
+        if manager == 'rpm':
+            import rpm
+
+            ts = rpm.TransactionSet()
+            return ",".join([n['name'] for n in ts.dbMatch('basenames', egg)])
+
+        if manager == 'dpkg':
+            # TODO: Add dpkg support
+            pass
+
+    except ImportError:
+        pass
 
 def autoremove(names, yes=False):
     dead = list_dead(names)
-    if dead and (yes or confirm("Uninstall (y/N)?")):
+    if dead and (yes or raw_input("Uninstall (y/N)?") == 'y'):
         for d in dead:
             remove_dist(d)
 
@@ -44,7 +88,7 @@ def show_tree(dist, dead, indent=0, visited=None):
         return
     visited.add(dist)
     print(' ' * 4 * indent, end='')
-    show_dist(dist)
+    show_dist(dist, get_package(dist))
     for req in requires(dist):
         if req in dead:
             show_tree(req, dead, indent + 1, visited)
@@ -71,19 +115,22 @@ def fixed_point(f, x):
         x = y
 
 
-def confirm(prompt):
-    return raw_input(prompt) == 'y'
-
-
-def show_dist(dist):
-    print('%s %s (%s)' % (dist.project_name, dist.version, dist.location))
+def show_dist(dist, pkg=None):
+    if pkg:
+        print('*> %s %s (%s) (Package: %s)' % (dist.project_name,
+            dist.version, dist.location, pkg))
+    else:
+        print('%s %s (%s)' % (dist.project_name, dist.version, dist.location))
 
 
 def remove_dist(dist):
-    pip.main(['uninstall', '-y', dist.project_name])
-    # Avoid duplicate output caused by pip.logger.consumers being configured
-    # over and over again
-    pip.logger.consumers = []
+    if not get_package(dist):
+        pip.main(['uninstall', '-y', dist.project_name])
+        # Avoid duplicate output caused by pip.logger.consumers being configured
+        # over and over again
+        pip.logger.consumers = []
+    else:
+        print("Skiped %s, module installed from package" % dist.project_name)
 
 
 def get_graph():
