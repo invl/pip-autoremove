@@ -13,6 +13,15 @@ try:
 except NameError:
     raw_input = input
 
+try:
+    # pip >= 10.0.0 hides main in pip._internal. We'll monkey patch what we need and hopefully this becomes available
+    # at some point.
+    from pip._internal import main, logger
+    pip.main = main
+    pip.logger = logger
+except ModuleNotFoundError:
+    pass
+
 
 WHITELIST = ['pip', 'setuptools']
 
