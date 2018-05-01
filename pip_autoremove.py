@@ -3,7 +3,8 @@ from __future__ import print_function
 import optparse
 import subprocess
 
-from pkg_resources import working_set, get_distribution
+import pip
+from pkg_resources import working_set, get_distribution, VersionConflict, DistributionNotFound
 
 
 __version__ = '0.9.1'
@@ -101,7 +102,18 @@ def get_graph():
 
 
 def requires(dist):
-    return map(get_distribution, dist.requires())
+    required = []
+    for pkg in dist.requires():
+        try:
+            required.append(get_distribution(pkg))
+        except VersionConflict as e:
+            print(e.report())
+            print("Redoing requirement with just package name...")
+            required.append(get_distribution(pkg.project_name))
+        except DistributionNotFound as e:
+            print(e.report())
+            print("Skipping %s", pkg.project_name)
+    return required
 
 
 def main(argv=None):
