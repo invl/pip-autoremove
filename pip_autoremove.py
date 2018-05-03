@@ -40,9 +40,9 @@ def list_dead(names):
         try:
             start.add(get_distribution(name))
         except DistributionNotFound:
-            print("%s is not an installed pip module, skipping" % name)
+            print("%s is not an installed pip module, skipping" % name, file=sys.stderr)
         except VersionConflict:
-            print("%s is not the currently installed version, skipping" % name)
+            print("%s is not the currently installed version, skipping" % name, file=sys.stderr)
     graph = get_graph()
     dead = exclude_whitelist(find_all_dead(graph, start))
     for d in start:
@@ -118,12 +118,12 @@ def requires(dist):
         try:
             required.append(get_distribution(pkg))
         except VersionConflict as e:
-            print(e.report())
-            print("Redoing requirement with just package name...")
+            print(e.report(), file=sys.stderr)
+            print("Redoing requirement with just package name...", file=sys.stderr)
             required.append(get_distribution(pkg.project_name))
         except DistributionNotFound as e:
-            print(e.report())
-            print("Skipping %s" % pkg.project_name)
+            print(e.report(), file=sys.stderr)
+            print("Skipping %s" % pkg.project_name, file=sys.stderr)
     return required
 
 
