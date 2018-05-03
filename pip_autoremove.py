@@ -25,7 +25,14 @@ def autoremove(names, yes=False):
 
 
 def list_dead(names):
-    start = set(map(get_distribution, names))
+    start = set()
+    for name in names:
+        try:
+            start.add(get_distribution(name))
+        except DistributionNotFound:
+            print("%s is not an installed pip module, skipping" % name)
+        except VersionConflict:
+            print("%s is not the currently installed version, skipping" % name)
     graph = get_graph()
     dead = exclude_whitelist(find_all_dead(graph, start))
     for d in start:
@@ -105,7 +112,7 @@ def requires(dist):
             required.append(get_distribution(pkg.project_name))
         except DistributionNotFound as e:
             print(e.report())
-            print("Skipping %s", pkg.project_name)
+            print("Skipping %s" % pkg.project_name)
     return required
 
 
