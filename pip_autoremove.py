@@ -79,6 +79,10 @@ def show_dist(dist):
     print('%s %s (%s)' % (dist.project_name, dist.version, dist.location))
 
 
+def show_freeze(dist):
+    print(dist.as_requirement())
+
+
 def remove_dist(dist):
     pip.main(['uninstall', '-y', dist.project_name])
     # Avoid duplicate output caused by pip.logger.consumers being configured
@@ -101,8 +105,8 @@ def requires(dist):
 def main(argv=None):
     parser = create_parser()
     (opts, args) = parser.parse_args(argv)
-    if opts.leaves:
-        list_leaves()
+    if opts.leaves or opts.freeze:
+        list_leaves(opts.freeze)
     elif opts.list:
         list_dead(args)
     else:
@@ -117,10 +121,13 @@ def get_leaves(graph):
     return filter(is_leaf, graph)
 
 
-def list_leaves():
+def list_leaves(freeze=False):
     graph = get_graph()
     for node in get_leaves(graph):
-        show_dist(node)
+        if freeze:
+            show_freeze(node)
+        else:
+            show_dist(node)
 
 
 def create_parser():
@@ -137,6 +144,9 @@ def create_parser():
     parser.add_option(
         '-y', '--yes', action='store_true', default=False,
         help="don't ask for confirmation of uninstall deletions.")
+    parser.add_option(
+        '-f', '--freeze', action='store_true', default=False,
+        help="list leaves (packages which are not used by any others) in requirements.txt format")
     return parser
 
 
