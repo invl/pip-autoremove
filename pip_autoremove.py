@@ -6,7 +6,7 @@ import subprocess
 from pkg_resources import working_set, get_distribution
 
 
-__version__ = '0.9.0'
+__version__ = '0.9.1'
 
 try:
     raw_input
