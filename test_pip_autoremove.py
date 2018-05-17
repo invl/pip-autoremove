@@ -1,5 +1,5 @@
-import pip
 import pkg_resources
+import subprocess
 
 import pip_autoremove
 
@@ -22,8 +22,7 @@ def test_find_all_dead():
 
 
 def install_dist(req):
-    pip.main(['install', req])
-    pip.logger.consumers = []
+    subprocess.check_call(["pip", "install", req])
 
 
 def has_dist(req):

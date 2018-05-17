@@ -1,8 +1,8 @@
 from __future__ import print_function
 
 import optparse
+import subprocess
 
-import pip
 from pkg_resources import working_set, get_distribution
 
 
@@ -80,10 +80,7 @@ def show_dist(dist):
 
 
 def remove_dist(dist):
-    pip.main(['uninstall', '-y', dist.project_name])
-    # Avoid duplicate output caused by pip.logger.consumers being configured
-    # over and over again
-    pip.logger.consumers = []
+    subprocess.check_call(["pip", "uninstall", "-y", dist.project_name])
 
 
 def get_graph():
