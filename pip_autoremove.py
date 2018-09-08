@@ -102,6 +102,8 @@ def main(argv=None):
         list_leaves()
     elif opts.list:
         list_dead(args)
+    elif len(args) == 0:
+        parser.print_help()
     else:
         autoremove(args, yes=opts.yes)
 
