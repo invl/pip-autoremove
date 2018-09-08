@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import optparse
 import subprocess
+import sys
 
 from pkg_resources import working_set, get_distribution
 
