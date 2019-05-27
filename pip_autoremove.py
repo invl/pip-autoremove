@@ -19,7 +19,7 @@ WHITELIST = ['pip', 'setuptools']
 
 def autoremove(names, yes=False):
     dead = list_dead(names)
-    if dead and (yes or confirm("Uninstall (y/N)?")):
+    if dead and (yes or confirm("Uninstall (y/N)? ")):
         for d in dead:
             remove_dist(d)
 
