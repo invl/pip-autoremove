@@ -20,8 +20,7 @@ WHITELIST = ['pip', 'setuptools']
 def autoremove(names, yes=False):
     dead = list_dead(names)
     if dead and (yes or confirm("Uninstall (y/N)?")):
-        for d in dead:
-            remove_dist(d)
+        remove_dists(dead)
 
 
 def list_dead(names):
@@ -79,8 +78,8 @@ def show_dist(dist):
     print('%s %s (%s)' % (dist.project_name, dist.version, dist.location))
 
 
-def remove_dist(dist):
-    subprocess.check_call(["pip", "uninstall", "-y", dist.project_name])
+def remove_dists(dists):
+    subprocess.check_call(["pip", "uninstall", "-y"] + [d.project_name for d in dists])
 
 
 def get_graph():
