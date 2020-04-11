@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import optparse
 import subprocess
+import sys
 
 import pip
 from pkg_resources import working_set, get_distribution, VersionConflict, DistributionNotFound
@@ -15,12 +16,17 @@ except NameError:
     raw_input = input
 
 try:
+    ModuleNotFoundError
+except NameError:
+    ModuleNotFoundError = ImportError
+
+try:
     # pip >= 10.0.0 hides main in pip._internal. We'll monkey patch what we need and hopefully this becomes available
     # at some point.
     from pip._internal import main, logger
     pip.main = main
     pip.logger = logger
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     pass
 
 
