@@ -14,7 +14,7 @@ except NameError:
     raw_input = input
 
 
-WHITELIST = ['pip', 'setuptools']
+WHITELIST = ['pip', 'setuptools', "pip-autoremove", "wheel"]
 
 
 def autoremove(names, yes=False):
