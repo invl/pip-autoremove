@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import optparse
 import subprocess
+import sys
 
 from pkg_resources import working_set, get_distribution
 
@@ -80,7 +81,7 @@ def show_dist(dist):
 
 
 def remove_dist(dist):
-    subprocess.check_call(["pip", "uninstall", "-y", dist.project_name])
+    subprocess.check_call([sys.executable, "-m", "pip", "uninstall", "-y", dist.project_name])
 
 
 def get_graph():
