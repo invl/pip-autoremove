@@ -30,7 +30,7 @@ except (ModuleNotFoundError, ImportError):
     pass
 
 
-WHITELIST = ['pip', 'setuptools']
+WHITELIST = ['pip', 'setuptools', "pip-autoremove", "wheel"]
 
 
 def autoremove(names, yes=False):
