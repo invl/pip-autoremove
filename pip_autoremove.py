@@ -5,10 +5,15 @@ import subprocess
 import sys
 
 import pip
-from pkg_resources import working_set, get_distribution, VersionConflict, DistributionNotFound
+from pkg_resources import (
+    working_set,
+    get_distribution,
+    VersionConflict,
+    DistributionNotFound,
+)
 
 
-__version__ = '0.9.1'
+__version__ = "0.9.1"
 
 try:
     raw_input
@@ -24,13 +29,14 @@ try:
     # pip >= 10.0.0 hides main in pip._internal. We'll monkey patch what we need and hopefully this becomes available
     # at some point.
     from pip._internal import main, logger
+
     pip.main = main
     pip.logger = logger
 except (ModuleNotFoundError, ImportError):
     pass
 
 
-WHITELIST = ['pip', 'setuptools']
+WHITELIST = ["pip", "setuptools", "pip-autoremove", "wheel"]
 
 
 def autoremove(names, yes=False):
@@ -47,7 +53,10 @@ def list_dead(names):
         except DistributionNotFound:
             print("%s is not an installed pip module, skipping" % name, file=sys.stderr)
         except VersionConflict:
-            print("%s is not the currently installed version, skipping" % name, file=sys.stderr)
+            print(
+                "%s is not the currently installed version, skipping" % name,
+                file=sys.stderr,
+            )
     graph = get_graph()
     dead = exclude_whitelist(find_all_dead(graph, start))
     for d in start:
@@ -65,7 +74,7 @@ def show_tree(dist, dead, indent=0, visited=None):
     if dist in visited:
         return
     visited.add(dist)
-    print(' ' * 4 * indent, end='')
+    print(" " * 4 * indent, end="")
     show_dist(dist)
     for req in requires(dist):
         if req in dead:
@@ -77,7 +86,6 @@ def find_all_dead(graph, start):
 
 
 def find_dead(graph, dead):
-
     def is_killed_by_us(node):
         succ = graph[node]
         return succ and not (succ - dead)
@@ -94,11 +102,11 @@ def fixed_point(f, x):
 
 
 def confirm(prompt):
-    return raw_input(prompt) == 'y'
+    return raw_input(prompt) == "y"
 
 
 def show_dist(dist):
-    print('%s %s (%s)' % (dist.project_name, dist.version, dist.location))
+    print("%s %s (%s)" % (dist.project_name, dist.version, dist.location))
 
 
 def show_freeze(dist):
@@ -107,10 +115,12 @@ def show_freeze(dist):
 
 def remove_dists(dists):
     if sys.executable:
-        pip_cmd = [sys.executable, '-m', 'pip']
+        pip_cmd = [sys.executable, "-m", "pip"]
     else:
-        pip_cmd = ['pip']
-    subprocess.check_call(pip_cmd + ["uninstall", "-y"] + [d.project_name for d in dists])
+        pip_cmd = ["pip"]
+    subprocess.check_call(
+        pip_cmd + ["uninstall", "-y"] + [d.project_name for d in dists]
+    )
 
 
 def get_graph():
@@ -150,7 +160,6 @@ def main(argv=None):
 
 
 def get_leaves(graph):
-
     def is_leaf(node):
         return not graph[node]
 
@@ -168,23 +177,39 @@ def list_leaves(freeze=False):
 
 def create_parser():
     parser = optparse.OptionParser(
-        usage='usage: %prog [OPTION]... [NAME]...',
-        version='%prog ' + __version__,
+        usage="usage: %prog [OPTION]... [NAME]...",
+        version="%prog " + __version__,
     )
     parser.add_option(
-        '-l', '--list', action='store_true', default=False,
-        help="list unused dependencies, but don't uninstall them.")
+        "-l",
+        "--list",
+        action="store_true",
+        default=False,
+        help="list unused dependencies, but don't uninstall them.",
+    )
     parser.add_option(
-        '-L', '--leaves', action='store_true', default=False,
-        help="list leaves (packages which are not used by any others).")
+        "-L",
+        "--leaves",
+        action="store_true",
+        default=False,
+        help="list leaves (packages which are not used by any others).",
+    )
     parser.add_option(
-        '-y', '--yes', action='store_true', default=False,
-        help="don't ask for confirmation of uninstall deletions.")
+        "-y",
+        "--yes",
+        action="store_true",
+        default=False,
+        help="don't ask for confirmation of uninstall deletions.",
+    )
     parser.add_option(
-        '-f', '--freeze', action='store_true', default=False,
-        help="list leaves (packages which are not used by any others) in requirements.txt format")
+        "-f",
+        "--freeze",
+        action="store_true",
+        default=False,
+        help="list leaves (packages which are not used by any others) in requirements.txt format",
+    )
     return parser
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
