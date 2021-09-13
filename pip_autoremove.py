@@ -3,17 +3,17 @@ from __future__ import print_function
 import optparse
 import subprocess
 import sys
+from collections import defaultdict
 
 import pip
 from pkg_resources import (
-    working_set,
-    get_distribution,
-    VersionConflict,
     DistributionNotFound,
+    VersionConflict,
+    get_distribution,
+    working_set,
 )
 
-
-__version__ = "0.9.1"
+__version__ = "0.10.0"
 
 try:
     raw_input
@@ -28,7 +28,7 @@ except NameError:
 try:
     # pip >= 10.0.0 hides main in pip._internal. We'll monkey patch what we need and hopefully this becomes available
     # at some point.
-    from pip._internal import main, logger
+    from pip._internal import logger, main
 
     pip.main = main
     pip.logger = logger
@@ -65,7 +65,7 @@ def list_dead(names):
 
 
 def exclude_whitelist(dists):
-    return set(dist for dist in dists if dist.project_name not in WHITELIST)
+    return {dist for dist in dists if dist.project_name not in WHITELIST}
 
 
 def show_tree(dist, dead, indent=0, visited=None):
@@ -118,14 +118,13 @@ def remove_dists(dists):
         pip_cmd = [sys.executable, "-m", "pip"]
     else:
         pip_cmd = ["pip"]
-    subprocess.check_call(
-        pip_cmd + ["uninstall", "-y"] + [d.project_name for d in dists]
-    )
+    subprocess.check_call(pip_cmd + ["uninstall", "-y"] + [d.project_name for d in dists])
 
 
 def get_graph():
-    g = dict((dist, set()) for dist in working_set)
+    g = defaultdict(set)
     for dist in working_set:
+        g[dist]
         for req in requires(dist):
             g[req].add(dist)
     return g

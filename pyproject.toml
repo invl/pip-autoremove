@@ -5,15 +5,20 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+[tool.black]
+line-length = 120
+
+[tool.flake8]
+max-line-length = 120
+extend-ignore = "SFS1,B014"
+
+[tool.isort]
+profile = "black"
+
 [tool.tox]
 legacy_tox_ini = """
-# Tox (https://tox.readthedocs.io/) is a tool for running tests
-# in multiple virtualenvs. This configuration file will run the
-# test suite on all supported python versions. To use it, "pip install tox"
-# and then run "tox" from this directory.
-
 [tox]
-envlist = py26, py27, py36, py37, py38, py39, pypy2, pypy36, pypy37
+envlist = py39-flake8, py27-flake8, py39-black, py26, py27, py36, py37, py38, py39, pypy2, pypy36, pypy37
 
 [gh-actions]
 python =
@@ -31,4 +36,33 @@ python =
 commands = pytest
 deps =
     pytest
+
+# Very basic syntax checking for py27
+[testenv:py27-flake8]
+commands =
+    flake8 --extend-ignore=E501
+deps =
+    flake8
+
+[testenv:py39-flake8]
+commands =
+    pflake8
+deps =
+    pyproject-flake8
+    pep8-naming
+    flake8-broken-line
+    flake8-bugbear
+    flake8-commas
+    flake8-comprehensions
+    flake8-eradicate
+    flake8-fixme
+    flake8-isort
+    flake8-sfs
+    flake8-type-annotations
+
+[testenv:py39-black]
+commands =
+    black --check --diff .
+deps =
+    black
 """
