@@ -142,9 +142,12 @@ def requires(dist, output=True):
                 print("%s by %s" % (e.report(), dist.project_name), file=sys.stderr)
                 print("Redoing requirement with just package name...", file=sys.stderr)
             required.append(get_distribution(pkg.project_name))
-        except DistributionNotFound as e:
+        except DistributionNotFound:
             if output:
-                print("%s is not installed, but required by %s, skipping" % (pkg.project_name, dist.project_name), file=sys.stderr)
+                print(
+                    "%s is not installed, but required by %s, skipping" % (pkg.project_name, dist.project_name),
+                    file=sys.stderr,
+                )
     return required
 
 
