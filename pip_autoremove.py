@@ -13,7 +13,7 @@ from pkg_resources import (
     working_set,
 )
 
-__version__ = "0.10.0"
+__version__ = "0.10.1"
 
 try:
     raw_input
@@ -57,6 +57,8 @@ def list_dead(names):
                 "%s is not the currently installed version, skipping" % name,
                 file=sys.stderr,
             )
+    if not start:
+        return start
     graph = get_graph()
     dead = exclude_whitelist(find_all_dead(graph, start))
     for d in start:
@@ -76,7 +78,7 @@ def show_tree(dist, dead, indent=0, visited=None):
     visited.add(dist)
     print(" " * 4 * indent, end="")
     show_dist(dist)
-    for req in requires(dist):
+    for req in requires(dist, False):
         if req in dead:
             show_tree(req, dead, indent + 1, visited)
 
@@ -121,27 +123,31 @@ def remove_dists(dists):
     subprocess.check_call(pip_cmd + ["uninstall", "-y"] + [d.project_name for d in dists])
 
 
-def get_graph():
+def get_graph(output=True):
     g = defaultdict(set)
     for dist in working_set:
         g[dist]
-        for req in requires(dist):
+        for req in requires(dist, output):
             g[req].add(dist)
     return g
 
 
-def requires(dist):
+def requires(dist, output=True):
     required = []
     for pkg in dist.requires():
         try:
             required.append(get_distribution(pkg))
         except VersionConflict as e:
-            print(e.report(), file=sys.stderr)
-            print("Redoing requirement with just package name...", file=sys.stderr)
+            if output:
+                print("%s by %s" % (e.report(), dist.project_name), file=sys.stderr)
+                print("Redoing requirement with just package name...", file=sys.stderr)
             required.append(get_distribution(pkg.project_name))
-        except DistributionNotFound as e:
-            print(e.report(), file=sys.stderr)
-            print("Skipping %s" % pkg.project_name, file=sys.stderr)
+        except DistributionNotFound:
+            if output:
+                print(
+                    "%s is not installed, but required by %s, skipping" % (pkg.project_name, dist.project_name),
+                    file=sys.stderr,
+                )
     return required
 
 
@@ -166,7 +172,7 @@ def get_leaves(graph):
 
 
 def list_leaves(freeze=False):
-    graph = get_graph()
+    graph = get_graph(not freeze)
     for node in get_leaves(graph):
         if freeze:
             show_freeze(node)
