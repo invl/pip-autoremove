@@ -74,7 +74,7 @@ def show_tree(dist, dead, indent=0, visited=None):
     if dist in visited:
         return
     visited.add(dist)
-    print(" " * 4 * indent, end="")
+    print(" " * 4 * indent, end="", file=sys.stderr)
     show_dist(dist)
     for req in requires(dist):
         if req in dead:
@@ -106,7 +106,7 @@ def confirm(prompt):
 
 
 def show_dist(dist):
-    print("%s %s (%s)" % (dist.project_name, dist.version, dist.location))
+    print("%s %s (%s)" % (dist.project_name, dist.version, dist.location), file=sys.stderr)
 
 
 def show_freeze(dist):
@@ -151,7 +151,8 @@ def main(argv=None):
     if opts.leaves or opts.freeze:
         list_leaves(opts.freeze)
     elif opts.list:
-        list_dead(args)
+        dead = list_dead(args)
+        print(' '.join([d.project_name for d in dead]))
     elif len(args) == 0:
         parser.print_help()
     else:
