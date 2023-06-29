@@ -102,7 +102,7 @@ def fixed_point(f, x):
 
 
 def confirm(prompt):
-    return raw_input(prompt) == "y"
+    return raw_input(prompt).strip().lower() in ("y", "")
 
 
 def show_dist(dist):
